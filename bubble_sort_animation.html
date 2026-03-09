@@ -653,3 +653,29 @@
     if (!running) return;
     paused = !paused;
     if (paused) {
+      setBtnState('paused');
+      statusMsg.textContent = '⏸ 已暫停，點擊「繼續」繼續排序';
+    } else {
+      setBtnState('running');
+      statusMsg.textContent = '繼續排序中…';
+      if (resolveStep) { resolveStep(); resolveStep = null; }
+    }
+  });
+
+  btnReset.addEventListener('click', () => {
+    stopSorting();
+    sortedIdx.clear();
+    renderBars();
+    resetStats();
+    clearLog();
+    progressBar.style.width = '0%';
+    statusMsg.textContent = '已重置，按「開始排序」再次排序';
+    setBtnState('idle');
+    btnStart.disabled = false;
+  });
+
+  // ── 初始化 ──
+  generateArray();
+</script>
+</body>
+</html>
