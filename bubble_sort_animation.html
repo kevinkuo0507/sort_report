@@ -1,6 +1,3 @@
-"""
-氣泡排序法演示 (Bubble Sort Demo)
-
             <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -38,6 +35,30 @@
       color: #888;
       margin-bottom: 24px;
       font-size: 0.95rem;
+    }
+
+    .btn-home {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+      z-index: 999;
+    }
+
+    .btn-home:hover {
+      background: rgba(0, 210, 255, 0.18);
+      box-shadow: 0 4px 16px rgba(0, 210, 255, 0.25);
+      color: #00d2ff;
     }
 
     /* ── 控制區 ── */
@@ -288,6 +309,8 @@
   </style>
 </head>
 <body>
+
+<a class="btn-home" href="index.html">← 首頁</a>
 
 <h1>🫧 氣泡排序法</h1>
 <p class="subtitle">Bubble Sort Animation Demo</p>
@@ -630,29 +653,3 @@
     if (!running) return;
     paused = !paused;
     if (paused) {
-      setBtnState('paused');
-      statusMsg.textContent = '⏸ 已暫停，點擊「繼續」繼續排序';
-    } else {
-      setBtnState('running');
-      statusMsg.textContent = '繼續排序中…';
-      if (resolveStep) { resolveStep(); resolveStep = null; }
-    }
-  });
-
-  btnReset.addEventListener('click', () => {
-    stopSorting();
-    sortedIdx.clear();
-    renderBars();
-    resetStats();
-    clearLog();
-    progressBar.style.width = '0%';
-    statusMsg.textContent = '已重置，按「開始排序」再次排序';
-    setBtnState('idle');
-    btnStart.disabled = false;
-  });
-
-  // ── 初始化 ──
-  generateArray();
-</script>
-</body>
-</html>
