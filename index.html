@@ -1,10 +1,9 @@
-
-            <!DOCTYPE html>
+!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>氣泡排序法動畫演示</title>
+  <title>演算法動畫展示</title>
   <style>
     * {
       margin: 0;
@@ -20,637 +19,101 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      justify-content: center;
+      padding: 40px 20px;
     }
 
     h1 {
-      font-size: 2.2rem;
-      margin-bottom: 6px;
+      font-size: 2.6rem;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+    }
+
+    .subtitle {
+      color: #888;
+      margin-bottom: 48px;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .card-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 36px 32px;
+      width: 280px;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      background: rgba(255, 255, 255, 0.11);
+      box-shadow: 0 12px 40px rgba(0, 210, 255, 0.25);
+    }
+
+    .card-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
       background: linear-gradient(90deg, #00d2ff, #7b2ff7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    .subtitle {
-      color: #888;
-      margin-bottom: 24px;
-      font-size: 0.95rem;
-    }
-
-    /* ── 控制區 ── */
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      background: rgba(255,255,255,0.05);
-      padding: 16px 24px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .control-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .control-group label {
-      font-size: 0.78rem;
+    .card-desc {
+      font-size: 0.9rem;
       color: #aaa;
+      line-height: 1.6;
     }
 
-    input[type="range"] {
-      -webkit-appearance: none;
-      width: 140px;
-      height: 6px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 3px;
-      outline: none;
-    }
-
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 16px;
-      height: 16px;
-      background: #00d2ff;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .range-val {
+    footer {
+      margin-top: 60px;
+      color: #555;
       font-size: 0.82rem;
-      color: #00d2ff;
-      font-weight: 600;
-    }
-
-    button {
-      padding: 10px 22px;
-      border: none;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    button:active { transform: scale(0.96); }
-
-    #btnGenerate {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
-    }
-
-    #btnStart {
-      background: linear-gradient(135deg, #00d2ff, #0080ff);
-      color: #fff;
-    }
-
-    #btnPause {
-      background: linear-gradient(135deg, #f7971e, #ffd200);
-      color: #1a1a2e;
-    }
-
-    #btnReset {
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
-      color: #fff;
-    }
-
-    button:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* ── 資訊面板 ── */
-    .info-bar {
-      display: flex;
-      gap: 24px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .info-card {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 10px 20px;
-      text-align: center;
-      min-width: 100px;
-    }
-
-    .info-card .val {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #00d2ff;
-    }
-
-    .info-card .lbl {
-      font-size: 0.75rem;
-      color: #888;
-    }
-
-    /* ── 圖例 ── */
-    .legend {
-      display: flex;
-      gap: 18px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.82rem;
-      color: #bbb;
-    }
-
-    .legend-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 3px;
-    }
-
-    /* ── 狀態訊息 ── */
-    #statusMsg {
-      font-size: 1rem;
-      margin-bottom: 14px;
-      min-height: 24px;
-      color: #ccc;
-      text-align: center;
-    }
-
-    /* ── 視覺化區域 ── */
-    #visualizer {
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      gap: 4px;
-      height: 320px;
-      width: 100%;
-      max-width: 900px;
-      background: rgba(0,0,0,0.25);
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.07);
-      padding: 10px 14px;
-      overflow: hidden;
-    }
-
-    .bar {
-      flex: 1;
-      max-width: 60px;
-      border-radius: 6px 6px 0 0;
-      position: relative;
-      transition: height 0.18s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-    }
-
-    .bar-label {
-      position: absolute;
-      top: -22px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #fff;
-      white-space: nowrap;
-    }
-
-    /* 狀態顏色 */
-    .bar.default   { background: linear-gradient(180deg, #4facfe, #00f2fe); }
-    .bar.comparing { background: linear-gradient(180deg, #f7971e, #ffd200); box-shadow: 0 0 14px #ffd20088; }
-    .bar.swapping  { background: linear-gradient(180deg, #ff416c, #ff4b2b); box-shadow: 0 0 14px #ff4b2b88; }
-    .bar.sorted    { background: linear-gradient(180deg, #43e97b, #38f9d7); box-shadow: 0 0 8px #43e97b55; }
-    .bar.pivot     { background: linear-gradient(180deg, #a18cd1, #fbc2eb); box-shadow: 0 0 14px #a18cd188; }
-
-    /* ── 步驟紀錄 ── */
-    #logBox {
-      width: 100%;
-      max-width: 900px;
-      height: 140px;
-      overflow-y: auto;
-      background: rgba(0,0,0,0.3);
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.07);
-      padding: 10px 14px;
-      margin-top: 16px;
-      font-size: 0.82rem;
-      color: #aaa;
-      line-height: 1.8;
-    }
-
-    #logBox::-webkit-scrollbar { width: 6px; }
-    #logBox::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
-
-    .log-swap    { color: #ff6b6b; }
-    .log-compare { color: #ffd200; }
-    .log-done    { color: #43e97b; font-weight: 700; }
-    .log-round   { color: #a18cd1; font-weight: 700; }
-
-    /* ── 完成動畫 ── */
-    @keyframes celebrate {
-      0%,100% { transform: scaleY(1); }
-      50%      { transform: scaleY(1.08); }
-    }
-
-    .bar.celebrate {
-      animation: celebrate 0.4s ease-in-out;
-    }
-
-    /* 進度條 */
-    .progress-wrap {
-      width: 100%;
-      max-width: 900px;
-      height: 6px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 3px;
-      margin-bottom: 10px;
-      overflow: hidden;
-    }
-
-    #progressBar {
-      height: 100%;
-      background: linear-gradient(90deg, #00d2ff, #7b2ff7);
-      border-radius: 3px;
-      transition: width 0.3s;
-      width: 0%;
     }
   </style>
 </head>
 <body>
 
-<h1>🫧 氣泡排序法</h1>
-<p class="subtitle">Bubble Sort Animation Demo</p>
+  <h1>演算法動畫展示</h1>
+  <p class="subtitle">選擇一個演算法，開始互動式學習</p>
 
-<!-- 控制區 -->
-<div class="controls">
-  <div class="control-group">
-    <label>陣列大小</label>
-    <input type="range" id="sizeSlider" min="5" max="40" value="16" />
-    <span class="range-val" id="sizeVal">16</span>
+  <div class="card-grid">
+
+    <a class="card" href="bubble_sort_animation.html">
+      <div class="card-icon">🫧</div>
+      <div class="card-title">氣泡排序法</div>
+      <div class="card-desc">透過動畫逐步觀察氣泡排序的比較與交換過程，支援速度調整與自訂陣列。</div>
+    </a>
+
+    <!-- 未來可在此新增更多演算法卡片 -->
+
   </div>
-  <div class="control-group">
-    <label>動畫速度</label>
-    <input type="range" id="speedSlider" min="1" max="10" value="5" />
-    <span class="range-val" id="speedVal">5</span>
-  </div>
-  <button id="btnGenerate">🎲 隨機產生</button>
-  <button id="btnStart">▶ 開始排序</button>
-  <button id="btnPause" disabled>⏸ 暫停</button>
-  <button id="btnReset" disabled>↺ 重置</button>
-</div>
 
-<!-- 資訊面板 -->
-<div class="info-bar">
-  <div class="info-card">
-    <div class="val" id="cmpCount">0</div>
-    <div class="lbl">比較次數</div>
-  </div>
-  <div class="info-card">
-    <div class="val" id="swpCount">0</div>
-    <div class="lbl">交換次數</div>
-  </div>
-  <div class="info-card">
-    <div class="val" id="roundCount">0</div>
-    <div class="lbl">輪次</div>
-  </div>
-  <div class="info-card">
-    <div class="val" id="timeElapsed">0.0s</div>
-    <div class="lbl">耗時</div>
-  </div>
-</div>
+  <footer>© 2026 演算法動畫展示</footer>
 
-<!-- 圖例 -->
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:#4facfe;"></div>未排序</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#ffd200;"></div>比較中</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#ff4b2b;"></div>交換中</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#43e97b;"></div>已排序</div>
-</div>
-
-<!-- 狀態訊息 -->
-<div id="statusMsg">點擊「隨機產生」開始！</div>
-
-<!-- 進度條 -->
-<div class="progress-wrap"><div id="progressBar"></div></div>
-
-<!-- 視覺化區域 -->
-<div id="visualizer"></div>
-
-<!-- 步驟紀錄 -->
-<div id="logBox">步驟紀錄將顯示在此…</div>
-
-<script>
-  // ── DOM 元素 ──
-  const visualizer  = document.getElementById('visualizer');
-  const logBox      = document.getElementById('logBox');
-  const statusMsg   = document.getElementById('statusMsg');
-  const progressBar = document.getElementById('progressBar');
-  const sizeSlider  = document.getElementById('sizeSlider');
-  const speedSlider = document.getElementById('speedSlider');
-  const sizeVal     = document.getElementById('sizeVal');
-  const speedVal    = document.getElementById('speedVal');
-  const cmpCountEl  = document.getElementById('cmpCount');
-  const swpCountEl  = document.getElementById('swpCount');
-  const roundCountEl= document.getElementById('roundCount');
-  const timeEl      = document.getElementById('timeElapsed');
-  const btnGenerate = document.getElementById('btnGenerate');
-  const btnStart    = document.getElementById('btnStart');
-  const btnPause    = document.getElementById('btnPause');
-  const btnReset    = document.getElementById('btnReset');
-
-  // ── 狀態 ──
-  let array       = [];
-  let bars        = [];
-  let sortedIdx   = new Set();
-  let running     = false;
-  let paused      = false;
-  let stopFlag    = false;
-  let cmpCount    = 0;
-  let swpCount    = 0;
-  let round       = 0;
-  let startTime   = null;
-  let timerHandle = null;
-  let resolveStep = null; // 暫停用
-
-  // ── 速度對應延遲 (ms) ──
-  const speedMap = [0, 800, 550, 380, 250, 160, 100, 60, 35, 18, 5];
-
-  function getDelay() {
-    return speedMap[parseInt(speedSlider.value)];
-  }
-
-  // ── 滑桿事件 ──
-  sizeSlider.addEventListener('input', () => {
-    sizeVal.textContent = sizeSlider.value;
-    if (!running) generateArray();
-  });
-
-  speedSlider.addEventListener('input', () => {
-    speedVal.textContent = speedSlider.value;
-  });
-
-  // ── 產生隨機陣列 ──
-  function generateArray() {
-    stopSorting();
-    const n = parseInt(sizeSlider.value);
-    array = Array.from({ length: n }, () => Math.floor(Math.random() * 95) + 5);
-    sortedIdx.clear();
-    renderBars();
-    resetStats();
-    statusMsg.textContent = `已產生 ${n} 個隨機數，按「開始排序」！`;
-    progressBar.style.width = '0%';
-    clearLog();
-    setBtnState('idle');
-  }
-
-  // ── 渲染長條 ──
-  function renderBars(compareA = -1, compareB = -1, swapA = -1, swapB = -1) {
-    visualizer.innerHTML = '';
-    bars = [];
-    const max = Math.max(...array);
-
-    array.forEach((val, i) => {
-      const bar = document.createElement('div');
-      bar.className = 'bar';
-
-      if (sortedIdx.has(i))            bar.classList.add('sorted');
-      else if (i === swapA || i === swapB)    bar.classList.add('swapping');
-      else if (i === compareA || i === compareB) bar.classList.add('comparing');
-      else                             bar.classList.add('default');
-
-      const heightPct = (val / max) * 95 + 5;
-      bar.style.height = `${heightPct}%`;
-
-      // 只在陣列較小時顯示數字
-      if (array.length <= 25) {
-        const lbl = document.createElement('span');
-        lbl.className = 'bar-label';
-        lbl.textContent = val;
-        bar.appendChild(lbl);
-      }
-
-      visualizer.appendChild(bar);
-      bars.push(bar);
-    });
-  }
-
-  // ── 重置統計 ──
-  function resetStats() {
-    cmpCount = 0; swpCount = 0; round = 0;
-    updateStats();
-    if (timerHandle) clearInterval(timerHandle);
-    timeEl.textContent = '0.0s';
-    startTime = null;
-  }
-
-  function updateStats() {
-    cmpCountEl.textContent  = cmpCount;
-    swpCountEl.textContent  = swpCount;
-    roundCountEl.textContent= round;
-  }
-
-  function clearLog() {
-    logBox.innerHTML = '';
-  }
-
-  function addLog(html) {
-    const p = document.createElement('p');
-    p.innerHTML = html;
-    logBox.appendChild(p);
-    logBox.scrollTop = logBox.scrollHeight;
-  }
-
-  // ── 按鈕狀態管理 ──
-  function setBtnState(state) {
-    if (state === 'idle') {
-      btnGenerate.disabled = false;
-      btnStart.disabled    = array.length === 0;
-      btnPause.disabled    = true;
-      btnReset.disabled    = true;
-    } else if (state === 'running') {
-      btnGenerate.disabled = true;
-      btnStart.disabled    = true;
-      btnPause.disabled    = false;
-      btnReset.disabled    = false;
-      btnPause.textContent = '⏸ 暫停';
-    } else if (state === 'paused') {
-      btnPause.disabled    = false;
-      btnPause.textContent = '▶ 繼續';
-    } else if (state === 'done') {
-      btnGenerate.disabled = false;
-      btnStart.disabled    = true;
-      btnPause.disabled    = true;
-      btnReset.disabled    = false;
-    }
-  }
-
-  // ── 停止排序 ──
-  function stopSorting() {
-    stopFlag = true;
-    running  = false;
-    paused   = false;
-    if (resolveStep) { resolveStep(); resolveStep = null; }
-    if (timerHandle) { clearInterval(timerHandle); timerHandle = null; }
-  }
-
-  // ── 延遲 + 暫停支援 ──
-  function sleep(ms) {
-    return new Promise(resolve => {
-      if (stopFlag) { resolve(); return; }
-      const handle = setTimeout(resolve, ms);
-      // 如果暫停，等待 resolveStep 被呼叫
-      if (paused) {
-        clearTimeout(handle);
-        resolveStep = resolve;
-      }
-    });
-  }
-
-  // 暫停時需要 promise 等待
-  function waitIfPaused() {
-    if (!paused) return Promise.resolve();
-    return new Promise(resolve => { resolveStep = resolve; });
-  }
-
-  // ── 主排序動畫 ──
-  async function bubbleSortAnim() {
-    const n = array.length;
-    let totalSteps = (n * (n - 1)) / 2;
-
-    startTime = Date.now();
-    timerHandle = setInterval(() => {
-      timeEl.textContent = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
-    }, 100);
-
-    for (let i = 0; i < n; i++) {
-      if (stopFlag) break;
-
-      round = i + 1;
-      updateStats();
-      addLog(`<span class="log-round">── 第 ${round} 輪 ──</span>`);
-      statusMsg.textContent = `第 ${round} 輪排序中…`;
-
-      let swapped = false;
-
-      for (let j = 0; j < n - i - 1; j++) {
-        if (stopFlag) break;
-
-        await waitIfPaused();
-        if (stopFlag) break;
-
-        // 比較
-        cmpCount++;
-        updateStats();
-        renderBars(j, j + 1);
-        addLog(`<span class="log-compare">比較 [${j}]=${array[j]}  vs  [${j+1}]=${array[j+1]}</span>`);
-        await sleep(getDelay());
-
-        if (array[j] > array[j + 1]) {
-          // 交換
-          renderBars(-1, -1, j, j + 1);
-          await sleep(getDelay() * 0.6);
-
-          [array[j], array[j + 1]] = [array[j + 1], array[j]];
-          swpCount++;
-          swapped = true;
-          updateStats();
-          renderBars(-1, -1, j, j + 1);
-          addLog(`<span class="log-swap">⇄ 交換！→ [${array.slice(0, n - i).join(', ')}]</span>`);
-          await sleep(getDelay() * 0.6);
-        }
-
-        // 更新進度
-        const done = i * (n - i - 1 + n - 1) / 2 + (j + 1);
-        progressBar.style.width = Math.min(100, (done / totalSteps) * 100) + '%';
-      }
-
-      if (stopFlag) break;
-
-      // 本輪最後一個確定排好
-      sortedIdx.add(n - i - 1);
-      renderBars();
-
-      if (!swapped) {
-        addLog(`<span class="log-done">✓ 第 ${round} 輪無交換，提前結束！</span>`);
-        // 剩餘全部標記為已排序
-        for (let k = 0; k < n - i - 1; k++) sortedIdx.add(k);
-        renderBars();
-        break;
-      }
-    }
-
-    if (!stopFlag) {
-      progressBar.style.width = '100%';
-      clearInterval(timerHandle);
-      statusMsg.textContent = `🎉 排序完成！共比較 ${cmpCount} 次，交換 ${swpCount} 次`;
-      addLog(`<span class="log-done">🎉 排序完成！比較 ${cmpCount} 次 | 交換 ${swpCount} 次 | 耗時 ${timeEl.textContent}</span>`);
-      setBtnState('done');
-      celebrateAll();
-    }
-
-    running = false;
-  }
-
-  // ── 完成慶祝動畫 ──
-  async function celebrateAll() {
-    for (let k = 0; k < bars.length; k++) {
-      bars[k].classList.add('celebrate');
-      await new Promise(r => setTimeout(r, 30));
-    }
-  }
-
-  // ── 按鈕事件 ──
-  btnGenerate.addEventListener('click', generateArray);
-
-  btnStart.addEventListener('click', async () => {
-    if (array.length === 0) return;
-    stopFlag = false;
-    running  = true;
-    paused   = false;
-    sortedIdx.clear();
-    resetStats();
-    clearLog();
-    renderBars();
-    setBtnState('running');
-    await bubbleSortAnim();
-  });
-
-  btnPause.addEventListener('click', () => {
-    if (!running) return;
-    paused = !paused;
-    if (paused) {
-      setBtnState('paused');
-      statusMsg.textContent = '⏸ 已暫停，點擊「繼續」繼續排序';
-    } else {
-      setBtnState('running');
-      statusMsg.textContent = '繼續排序中…';
-      if (resolveStep) { resolveStep(); resolveStep = null; }
-    }
-  });
-
-  btnReset.addEventListener('click', () => {
-    stopSorting();
-    sortedIdx.clear();
-    renderBars();
-    resetStats();
-    clearLog();
-    progressBar.style.width = '0%';
-    statusMsg.textContent = '已重置，按「開始排序」再次排序';
-    setBtnState('idle');
-    btnStart.disabled = false;
-  });
-
-  // ── 初始化 ──
-  generateArray();
-</script>
 </body>
 </html>
