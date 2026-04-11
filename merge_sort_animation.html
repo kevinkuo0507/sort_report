@@ -37,6 +37,74 @@
       font-size: 0.95rem;
     }
 
+    .doc-wrap {
+      width: 100%;
+      max-width: 900px;
+      display: grid;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .doc-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 14px 18px;
+    }
+
+    .doc-title {
+      color: #00d2ff;
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+
+    .doc-card p {
+      color: #cdd7e1;
+      line-height: 1.8;
+      font-size: 0.92rem;
+    }
+
+    .pseudo {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+      overflow-x: auto;
+      color: #e8f2ff;
+      font-size: 0.86rem;
+      line-height: 1.65;
+    }
+
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      font-size: 0.9rem;
+    }
+
+    .doc-table th,
+    .doc-table td {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .doc-table th {
+      background: rgba(0, 0, 0, 0.22);
+      color: #00d2ff;
+      font-weight: 700;
+    }
+
+    .section-anchor {
+      width: 100%;
+      max-width: 900px;
+      color: #00d2ff;
+      font-size: 1.2rem;
+      margin: 6px 0 10px;
+      padding-left: 8px;
+      border-left: 4px solid #00d2ff;
+    }
+
     .btn-home {
       position: fixed;
       top: 16px;
@@ -308,6 +376,47 @@
 <h1>🧬 合併排序法</h1>
 <p class="subtitle">Merge Sort Animation Demo</p>
 
+<div class="doc-wrap">
+  <section class="doc-card">
+    <h2 class="doc-title">一、操作原理</h2>
+    <p>採用分治法。先將陣列切成更小區塊，再把左右兩個已排序子陣列比較後依序寫回，逐步合併成完整排序結果。</p>
+  </section>
+
+  <section class="doc-card">
+    <h2 class="doc-title">二、演算法偽代碼</h2>
+    <pre class="pseudo">function mergeSort(arr)
+  if length(arr) <= 1
+    return arr
+  mid = floor(length(arr) / 2)
+  left = mergeSort(arr[0..mid-1])
+  right = mergeSort(arr[mid..end])
+  return merge(left, right)
+
+function merge(left, right)
+  result = []
+  while left and right not empty
+    append smaller one to result
+  append remaining elements</pre>
+  </section>
+
+  <section class="doc-card">
+    <h2 class="doc-title">三、時間與空間複雜度</h2>
+    <table class="doc-table">
+      <thead>
+        <tr><th>情況</th><th>複雜度</th><th>說明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>最佳</td><td>O(n log n)</td><td>分割與合併深度固定</td></tr>
+        <tr><td>平均</td><td>O(n log n)</td><td>每層處理 n 個元素</td></tr>
+        <tr><td>最差</td><td>O(n log n)</td><td>時間複雜度穩定</td></tr>
+        <tr><td>空間</td><td>O(n)</td><td>需要暫存陣列做合併</td></tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<h2 class="section-anchor">四、互動視覺化操作</h2>
+
 <div class="controls">
   <div class="control-group">
     <label>陣列大小</label>
@@ -357,6 +466,8 @@
 <div class="progress-wrap"><div id="progressBar"></div></div>
 
 <div id="visualizer"></div>
+
+<h2 class="section-anchor">五、步驟紀錄</h2>
 
 <div id="logBox">步驟紀錄將顯示在此…</div>
 

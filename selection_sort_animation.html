@@ -37,6 +37,74 @@
       font-size: 0.95rem;
     }
 
+    .doc-wrap {
+      width: 100%;
+      max-width: 900px;
+      display: grid;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .doc-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 14px 18px;
+    }
+
+    .doc-title {
+      color: #00d2ff;
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+
+    .doc-card p {
+      color: #cdd7e1;
+      line-height: 1.8;
+      font-size: 0.92rem;
+    }
+
+    .pseudo {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+      overflow-x: auto;
+      color: #e8f2ff;
+      font-size: 0.86rem;
+      line-height: 1.65;
+    }
+
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      font-size: 0.9rem;
+    }
+
+    .doc-table th,
+    .doc-table td {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .doc-table th {
+      background: rgba(0, 0, 0, 0.22);
+      color: #00d2ff;
+      font-weight: 700;
+    }
+
+    .section-anchor {
+      width: 100%;
+      max-width: 900px;
+      color: #00d2ff;
+      font-size: 1.2rem;
+      margin: 6px 0 10px;
+      padding-left: 8px;
+      border-left: 4px solid #00d2ff;
+    }
+
     .btn-home {
       position: fixed;
       top: 16px;
@@ -369,6 +437,43 @@
 <h1>🎯 選擇排序法</h1>
 <p class="subtitle">Selection Sort Animation Demo</p>
 
+<div class="doc-wrap">
+  <section class="doc-card">
+    <h2 class="doc-title">一、操作原理</h2>
+    <p>每一輪在未排序區間中尋找最小值，找到後與該輪起始位置交換。左側已完成區會逐步擴大，直到全陣列排序完成。</p>
+  </section>
+
+  <section class="doc-card">
+    <h2 class="doc-title">二、演算法偽代碼</h2>
+    <pre class="pseudo">function selectionSort(arr)
+  n = length(arr)
+  for i = 0 to n - 2
+    minIdx = i
+    for j = i + 1 to n - 1
+      if arr[j] < arr[minIdx]
+        minIdx = j
+    if minIdx != i
+      swap(arr[i], arr[minIdx])</pre>
+  </section>
+
+  <section class="doc-card">
+    <h2 class="doc-title">三、時間與空間複雜度</h2>
+    <table class="doc-table">
+      <thead>
+        <tr><th>情況</th><th>複雜度</th><th>說明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>最佳</td><td>O(n^2)</td><td>仍需完整掃描找最小值</td></tr>
+        <tr><td>平均</td><td>O(n^2)</td><td>比較次數固定在二次方等級</td></tr>
+        <tr><td>最差</td><td>O(n^2)</td><td>比較次數與資料分布無關</td></tr>
+        <tr><td>空間</td><td>O(1)</td><td>原地排序</td></tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<h2 class="section-anchor">四、互動視覺化操作</h2>
+
 <div class="controls">
   <div class="control-group">
     <label>陣列大小</label>
@@ -428,6 +533,8 @@
 <div class="progress-wrap"><div id="progressBar"></div></div>
 
 <div id="visualizer"></div>
+
+<h2 class="section-anchor">五、步驟紀錄</h2>
 
 <div id="logBox">步驟紀錄將顯示在此…</div>
 
