@@ -432,6 +432,11 @@
 <div id="logBox">步驟紀錄將顯示在此…</div>
 
 <script>
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('from') !== 'home') {
+    window.location.replace('index.html');
+  }
+
   const visualizer = document.getElementById('visualizer');
   const logBox = document.getElementById('logBox');
   const statusMsg = document.getElementById('statusMsg');
